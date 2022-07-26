@@ -7,10 +7,12 @@ public class PlayerController : MonoBehaviour
     #region
     private Rigidbody rb;
     public float speed;
+    float horizontal;
     [SerializeField] private float groundVelocity;
     [SerializeField] private float jumpVelocity;
     [SerializeField] private float jumpFallVelocity;
     [SerializeField] private float jump;
+    private bool isforwardClicked;
     #endregion
     void Start()
     {
@@ -20,11 +22,12 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float horizontal = Input.GetAxisRaw("Horizontal");
+        horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Jump");
         PlayerMovementAnimation(horizontal);
         PlayerJumpAnimation(vertical);
         MoveCharacter(horizontal, vertical);
+        Move();
 //#if UNITY_EDITOR
 //        if (Input.GetKey(KeyCode.D))
 //        {
@@ -54,7 +57,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void MoveCharacter(float horizontal, float verticle)
+    public void Move()
+    {
+
+        Debug.Log("AYA");
+        Vector3 position = transform.position;
+        position.z += horizontal * speed * Time.deltaTime;
+        transform.position = position;
+    }
+
+    public void MoveCharacter(float horizontal, float verticle)
     {
         // Move character horizontally
         Vector3 position = transform.position;
