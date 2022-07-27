@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    #region
+
     private Rigidbody rb;
     public float speed;
     float horizontal;
@@ -16,10 +17,21 @@ public class PlayerController : MonoBehaviour
     public bool isforwardClicked = false;
     public bool isReverseClicked = false;
     public bool isFacingRight = true;
+    public bool isGrounded = false;
+    Collider[] groundColliders;
+    public float groundCheckRadius;
+    public LayerMask groundLayer;
+    public Transform groundCheck;
+    public float jumpPower;
     private Animator animator;
     public bool jumping = false;
+    private bool gameOver;
+    public bool ableToMakeADoubleJump = false;
 
-    #endregion
+    [Header("Health UI")]
+    [SerializeField] private Image[] hearts;
+    [SerializeField] private int livesRemain = 3;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -34,46 +46,18 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         horizontal = Input.GetAxis("Horizontal");
-        vertical = Input.GetAxisRaw("Jump");
-        //Debug.Log("UPDATE"+horizontal);
-           
-        
-//#if UNITY_EDITOR
-//        if (Input.GetKey(KeyCode.D))
-//        {
-//            rb.velocity = new Vector3(0, 0, 1 * speed * Time.deltaTime);
-//        }
-//#endif
-    }
+        vertical = Input.GetAxis("Jump");
 
-    private void FixedUpdate()
-    {
-        rb.velocity = new Vector3(horizontal * speed * Time.fixedDeltaTime, rb.velocity.y, 0);
-        Debug.Log(horizontal);
-        if (!jumping)
+        if (isGrounded)
         {
             animator.SetFloat("Horizontal", Mathf.Abs(horizontal));
-        }
-        MoveWithUIButtons();
-
-        if (vertical > 0)
-        {
-            jumping = true;
-            animator.SetBool("Jumping", true);
-            rb.AddForce(new Vector3(0f, jump, 0f), ForceMode.Impulse);
-        }
-        if (vertical == 0)
-        {
-            jumping = false;
-            animator.SetBool("Jumping", false);
-            //rb.AddForce(new Vector3(0f, jump, 0f), ForceMode.Impulse);
         }
 
         if (horizontal > 0 && !isFacingRight)
         {
             Flip();
         }
-        else if(horizontal<0 && isFacingRight)
+        else if (horizontal < 0 && isFacingRight)
         {
             Flip();
         }
@@ -85,7 +69,92 @@ public class PlayerController : MonoBehaviour
         {
             Flip();
         }
+        AttackAnimation();
+        //Debug.Log("UPDATE"+horizontal);
 
+
+        //#if UNITY_EDITOR
+        //        if (Input.GetKey(KeyCode.D))
+        //        {
+        //            rb.velocity = new Vector3(0, 0, 1 * speed * Time.deltaTime);
+        //        }
+        //#endif
+    }
+
+    private void FixedUpdate()
+    {
+        if (!isGrounded)
+        {
+            animator.SetBool("Jumping", true);
+            rb.AddForce(new Vector3(0, -jumpFallVelocity, 0));
+        }
+
+        if (ableToMakeADoubleJump && vertical > 0)
+        {
+            DoubleJump();
+        }
+
+        if(isGrounded && vertical > 0)
+        {
+            horizontal = 0;
+            isGrounded = false;
+            ableToMakeADoubleJump = true;
+            animator.SetBool("Jumping", true);
+            rb.AddForce(new Vector3(0, jumpPower, 0));
+        }
+        else
+        {
+            animator.SetBool("Jumping", false);
+        }
+
+        groundColliders = Physics.OverlapSphere(groundCheck.position, groundCheckRadius, groundLayer);
+        if (groundColliders.Length > 0)
+        {
+            isGrounded = true;
+            ableToMakeADoubleJump = false;
+        }
+        else
+        {
+            isGrounded = false;
+        }
+
+        Movement();
+        MoveWithUIButtons();
+        // MoveCharacter(horizontal, vertical);
+        //PlayerJumpAnimation(vertical);
+        //Move();
+    }
+
+    private void DoubleJump()
+    {
+        //Double Jump
+        animator.SetBool("Jumping", true);
+
+        rb.AddForce(new Vector3(0, jumpPower, 0));
+        ableToMakeADoubleJump = false;
+    }
+
+    public void KillPlayer()
+    {
+        livesRemain--;
+        UpdateLifeUI();
+        //if (gameOver == true)
+        //{
+        //    gameOverController.PlayerDied();
+        //}
+    }
+    private void UpdateLifeUI()
+    {
+        hearts[livesRemain].gameObject.SetActive(false);
+
+        if (livesRemain == 0)
+        {
+            hearts[livesRemain].gameObject.SetActive(false);
+            gameOver = true;
+        }
+    }
+    void AttackAnimation()
+    {
         if (Input.GetKey(KeyCode.S))
         {
             animator.SetBool("Attack", true);
@@ -94,9 +163,11 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetBool("Attack", false);
         }
-        // MoveCharacter(horizontal, vertical);
-        PlayerJumpAnimation(vertical);
-        //Move();
+    }
+
+    void Movement()
+    {
+        rb.velocity = new Vector3(horizontal * speed * Time.fixedDeltaTime, rb.velocity.y, 0);      
     }
 
     void Flip()
@@ -122,6 +193,27 @@ public class PlayerController : MonoBehaviour
     }
 
     #region UI Button Movement
+
+    public void OnAttackButtonClick()
+    {
+        animator.SetBool("Attack", true);
+    }
+    public void OnAttackButtonUP()
+    {
+        animator.SetBool("Attack", false);
+    }
+
+
+    public void OnJumpButtonClick()
+    {
+        if (isGrounded)
+        {
+            isGrounded = false;
+            animator.SetBool("Jumping", true);
+            rb.AddForce(new Vector3(0, jumpPower, 0));
+        }
+    }
+
     public void OnForwardButton()
     {
         isforwardClicked = true;
@@ -151,7 +243,7 @@ public class PlayerController : MonoBehaviour
         if (isforwardClicked)
         {
             rb.velocity = new Vector3(speed*Time.fixedDeltaTime, rb.velocity.y, 0);
-            if (!jumping)
+            if (isGrounded)
             {
                 animator.SetFloat("Horizontal", Mathf.Abs(speed));
             }
@@ -159,7 +251,7 @@ public class PlayerController : MonoBehaviour
         else if (isReverseClicked)
         {
             rb.velocity -= new Vector3(speed * Time.fixedDeltaTime, rb.velocity.y, 0);
-            if (!jumping)
+            if (isGrounded)
             {
                 animator.SetFloat("Horizontal", Mathf.Abs(speed));
             }
@@ -169,22 +261,24 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    public void MoveCharacter(float horizontal, float verticle)
-    {
-        // Move character horizontally
-        if (horizontal > 0)
-        {
-            Vector3 position = transform.position;
-            position.z += horizontal * speed * Time.fixedDeltaTime;
-            transform.position = position;
-            animator.SetFloat("Horizontal", horizontal);
-        }
-        if (horizontal == 0)
-        {
-            animator.SetFloat("Horizontal", horizontal);
-        }
 
-        // Move character vertically
-      
+    #region collision
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Coin"))
+        {
+            Destroy(other.gameObject);
+        }
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            KillPlayer();
+        }
+    }
+
+    #endregion
 }
