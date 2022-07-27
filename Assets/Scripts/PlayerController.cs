@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     public bool isReverseClicked = false;
     public bool isFacingRight = true;
     private Animator animator;
+    public bool jumping = false;
 
     #endregion
     void Start()
@@ -26,6 +27,7 @@ public class PlayerController : MonoBehaviour
         isforwardClicked = false;
         isReverseClicked = false;
         isFacingRight = true;
+        jumping = false;
     }
 
     // Update is called once per frame
@@ -48,8 +50,24 @@ public class PlayerController : MonoBehaviour
     {
         rb.velocity = new Vector3(horizontal * speed * Time.fixedDeltaTime, rb.velocity.y, 0);
         Debug.Log(horizontal);
-        animator.SetFloat("Horizontal", Mathf.Abs(horizontal));
+        if (!jumping)
+        {
+            animator.SetFloat("Horizontal", Mathf.Abs(horizontal));
+        }
         MoveWithUIButtons();
+
+        if (vertical > 0)
+        {
+            jumping = true;
+            animator.SetBool("Jumping", true);
+            rb.AddForce(new Vector3(0f, jump, 0f), ForceMode.Impulse);
+        }
+        if (vertical == 0)
+        {
+            jumping = false;
+            animator.SetBool("Jumping", false);
+            //rb.AddForce(new Vector3(0f, jump, 0f), ForceMode.Impulse);
+        }
 
         if (horizontal > 0 && !isFacingRight)
         {
@@ -68,8 +86,16 @@ public class PlayerController : MonoBehaviour
             Flip();
         }
 
+        if (Input.GetKey(KeyCode.S))
+        {
+            animator.SetBool("Attack", true);
+        }
+        else if (Input.GetKeyUp(KeyCode.S))
+        {
+            animator.SetBool("Attack", false);
+        }
         // MoveCharacter(horizontal, vertical);
-        //PlayerJumpAnimation(vertical);
+        PlayerJumpAnimation(vertical);
         //Move();
     }
 
@@ -85,12 +111,12 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Space))// && isGrounded)
         {
-            animator.SetBool("Jump", true);
+            animator.SetBool("Jumping", true);
             rb.velocity = new Vector3(0, jumpVelocity, 0);
         }
         else if (Input.GetKeyUp(KeyCode.Space))
         {
-            animator.SetBool("Jump", false);
+            animator.SetBool("Jumping", false);
             rb.velocity = new Vector3(0, jumpFallVelocity, 0);
         }
     }
@@ -125,12 +151,18 @@ public class PlayerController : MonoBehaviour
         if (isforwardClicked)
         {
             rb.velocity = new Vector3(speed*Time.fixedDeltaTime, rb.velocity.y, 0);
-            animator.SetFloat("Horizontal", Mathf.Abs(speed));
+            if (!jumping)
+            {
+                animator.SetFloat("Horizontal", Mathf.Abs(speed));
+            }
         }
         else if (isReverseClicked)
         {
             rb.velocity -= new Vector3(speed * Time.fixedDeltaTime, rb.velocity.y, 0);
-            animator.SetFloat("Horizontal", Mathf.Abs(speed));
+            if (!jumping)
+            {
+                animator.SetFloat("Horizontal", Mathf.Abs(speed));
+            }
         }
 
     }
@@ -153,10 +185,6 @@ public class PlayerController : MonoBehaviour
         }
 
         // Move character vertically
-        if (verticle > 0)
-        {
-            animator.SetBool("Jump", true);
-            rb.AddForce(new Vector3(0f, jump,0f), ForceMode.Impulse);
-        }
+      
     }
 }

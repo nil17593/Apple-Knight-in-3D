@@ -181,7 +181,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: 'Right
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -267,7 +269,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 499250620}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Level1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -314,7 +316,7 @@ GameObject:
   - component: {fileID: 501610948}
   - component: {fileID: 501610947}
   - component: {fileID: 501610946}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Obstacle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -411,7 +413,7 @@ GameObject:
   - component: {fileID: 567806267}
   - component: {fileID: 567806266}
   - component: {fileID: 567806265}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platform (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -508,7 +510,7 @@ GameObject:
   - component: {fileID: 644113534}
   - component: {fileID: 644113533}
   - component: {fileID: 644113532}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platform (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -701,7 +703,7 @@ GameObject:
   - component: {fileID: 721995194}
   - component: {fileID: 721995193}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: LeftButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -967,7 +969,7 @@ GameObject:
   - component: {fileID: 1192516642}
   - component: {fileID: 1192516641}
   - component: {fileID: 1192516640}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platform (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1064,7 +1066,7 @@ GameObject:
   - component: {fileID: 1208904235}
   - component: {fileID: 1208904234}
   - component: {fileID: 1208904233}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platform (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1163,7 +1165,7 @@ GameObject:
   - component: {fileID: 1348647331}
   - component: {fileID: 1348647334}
   m_Layer: 5
-  m_Name: Button
+  m_Name: RightButtonButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1329,7 +1331,7 @@ GameObject:
   - component: {fileID: 1518401121}
   - component: {fileID: 1518401120}
   - component: {fileID: 1518401119}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platform (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1462,12 +1464,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -1528,7 +1530,7 @@ GameObject:
   - component: {fileID: 1662780580}
   - component: {fileID: 1662780579}
   - component: {fileID: 1662780578}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platform (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1625,7 +1627,7 @@ GameObject:
   - component: {fileID: 1832537938}
   - component: {fileID: 1832537937}
   - component: {fileID: 1832537936}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1845,6 +1847,7 @@ MonoBehaviour:
   isforwardClicked: 0
   isReverseClicked: 0
   isFacingRight: 1
+  jumping: 0
 --- !u!1 &1934804585
 GameObject:
   m_ObjectHideFlags: 0
@@ -1925,7 +1928,7 @@ GameObject:
   - component: {fileID: 2020913874}
   - component: {fileID: 2020913873}
   - component: {fileID: 2020913872}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platform (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2022,7 +2025,7 @@ GameObject:
   - component: {fileID: 2037433555}
   - component: {fileID: 2037433554}
   - component: {fileID: 2037433553}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platform (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2119,7 +2122,7 @@ GameObject:
   - component: {fileID: 2083987795}
   - component: {fileID: 2083987794}
   - component: {fileID: 2083987793}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SecretArea
   m_TagString: SecretArea
   m_Icon: {fileID: 0}
@@ -2216,7 +2219,7 @@ GameObject:
   - component: {fileID: 2096127737}
   - component: {fileID: 2096127736}
   - component: {fileID: 2096127735}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platform (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2359,7 +2362,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: 'Left
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2448,7 +2453,7 @@ GameObject:
   - component: {fileID: 2143289119}
   - component: {fileID: 2143289118}
   - component: {fileID: 2143289117}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SecretArea
   m_TagString: SecretArea
   m_Icon: {fileID: 0}
@@ -4351,7 +4356,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7870416567976815300}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -18.1, y: 4.6, z: 0.3}
+  m_LocalPosition: {x: -18.1, y: 4.6, z: -1.02}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4557,7 +4562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 670cd9081ff03234cb60b5f7ae42d7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 500
   groundVelocity: 5
   jumpVelocity: 2
   jumpFallVelocity: 5.1
@@ -4565,6 +4570,7 @@ MonoBehaviour:
   isforwardClicked: 0
   isReverseClicked: 0
   isFacingRight: 1
+  jumping: 0
 --- !u!54 &7870416567976815302
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4579,7 +4585,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 120
   m_CollisionDetection: 0
 --- !u!136 &7870416567976815303
 CapsuleCollider:
