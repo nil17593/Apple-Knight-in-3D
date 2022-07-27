@@ -33,8 +33,8 @@ public class PlayerController : MonoBehaviour
     {
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxisRaw("Jump");
-
-            Move();
+        //Debug.Log("UPDATE"+horizontal);
+           
         
 //#if UNITY_EDITOR
 //        if (Input.GetKey(KeyCode.D))
@@ -46,8 +46,10 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.velocity = new Vector3(horizontal * speed, rb.velocity.y, 0);
+        rb.velocity = new Vector3(horizontal * speed * Time.fixedDeltaTime, rb.velocity.y, 0);
+        Debug.Log(horizontal);
         animator.SetFloat("Horizontal", Mathf.Abs(horizontal));
+        MoveWithUIButtons();
 
         if (horizontal > 0 && !isFacingRight)
         {
@@ -57,6 +59,15 @@ public class PlayerController : MonoBehaviour
         {
             Flip();
         }
+        else if (isforwardClicked && !isFacingRight)
+        {
+            Flip();
+        }
+        else if (isReverseClicked && isFacingRight)
+        {
+            Flip();
+        }
+
         // MoveCharacter(horizontal, vertical);
         //PlayerJumpAnimation(vertical);
         //Move();
@@ -83,10 +94,14 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector3(0, jumpFallVelocity, 0);
         }
     }
+
+    #region UI Button Movement
     public void OnForwardButton()
     {
         isforwardClicked = true;
-        horizontal = 1;
+        horizontal = 1f;
+       
+
     }
     public void OnForwardButtonUp()
     {
@@ -97,7 +112,7 @@ public class PlayerController : MonoBehaviour
     public void OnReverseButton()
     {
         isReverseClicked = true;
-        horizontal = 1;
+        horizontal = -1;
     }
     public void OnReverseButtonUp()
     {
@@ -105,27 +120,22 @@ public class PlayerController : MonoBehaviour
         horizontal = 0;
     }
 
-    public void Move()
+    public void MoveWithUIButtons()
     {
         if (isforwardClicked)
         {
-            Debug.Log(horizontal);
-            animator.SetFloat("Horizontal", horizontal);
-            Vector3 position = transform.position;
-            position.z +=  speed * Time.deltaTime;
-            transform.position = position;
+            rb.velocity = new Vector3(speed*Time.fixedDeltaTime, rb.velocity.y, 0);
+            animator.SetFloat("Horizontal", Mathf.Abs(speed));
         }
         else if (isReverseClicked)
         {
-            animator.SetFloat("Horizontal", horizontal);
-            Vector3 position = transform.position;
-            position.z = speed * Time.deltaTime;
-            transform.position = position;
-            Quaternion rot = Quaternion.Euler(0, 180, 0);
-            transform.rotation = rot;
+            rb.velocity -= new Vector3(speed * Time.fixedDeltaTime, rb.velocity.y, 0);
+            animator.SetFloat("Horizontal", Mathf.Abs(speed));
         }
 
     }
+
+    #endregion
 
     public void MoveCharacter(float horizontal, float verticle)
     {
