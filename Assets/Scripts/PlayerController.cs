@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpVelocity;
     [SerializeField] private float jumpFallVelocity;
     [SerializeField] private float jump;
+
     public bool isforwardClicked = false;
     public bool isReverseClicked = false;
     public bool isFacingRight = true;
@@ -25,12 +26,14 @@ public class PlayerController : MonoBehaviour
     public float jumpPower;
     private Animator animator;
     public bool jumping = false;
+    public bool secretArea = false;
     private bool gameOver;
     public bool ableToMakeADoubleJump = false;
 
     [Header("Health UI")]
     [SerializeField] private Image[] hearts;
     [SerializeField] private int livesRemain = 3;
+    [SerializeField] private int score;
 
     void Start()
     {
@@ -51,6 +54,14 @@ public class PlayerController : MonoBehaviour
         if (isGrounded)
         {
             animator.SetFloat("Horizontal", Mathf.Abs(horizontal));
+        }
+        if (isGrounded && isforwardClicked)
+        {
+            animator.SetFloat("Horizontal", Mathf.Abs(speed));
+        }
+        if (isGrounded && isReverseClicked)
+        {
+            animator.SetFloat("Horizontal", Mathf.Abs(speed));
         }
 
         if (horizontal > 0 && !isFacingRight)
@@ -89,14 +100,14 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(new Vector3(0, -jumpFallVelocity, 0));
         }
 
-        if (ableToMakeADoubleJump && vertical > 0)
-        {
-            DoubleJump();
-        }
+        //if (ableToMakeADoubleJump && vertical > 0)
+        //{
+        //    DoubleJump();
+        //}
 
         if(isGrounded && vertical > 0)
         {
-            horizontal = 0;
+            //horizontal = 0;
             isGrounded = false;
             ableToMakeADoubleJump = true;
             animator.SetBool("Jumping", true);
@@ -209,7 +220,7 @@ public class PlayerController : MonoBehaviour
         if (isGrounded)
         {
             isGrounded = false;
-            animator.SetBool("Jumping", true);
+            animator.SetBool("Jump", true);
             rb.AddForce(new Vector3(0, jumpPower, 0));
         }
     }
@@ -218,8 +229,6 @@ public class PlayerController : MonoBehaviour
     {
         isforwardClicked = true;
         horizontal = 1f;
-       
-
     }
     public void OnForwardButtonUp()
     {
@@ -242,7 +251,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isforwardClicked)
         {
-            rb.velocity = new Vector3(speed*Time.fixedDeltaTime, rb.velocity.y, 0);
+            rb.velocity = new Vector3(speed * Time.fixedDeltaTime, rb.velocity.y, 0);
             if (isGrounded)
             {
                 animator.SetFloat("Horizontal", Mathf.Abs(speed));
@@ -268,7 +277,18 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Coin"))
         {
+            //score += 1;
+            ScoreController.instance.IncreaseScore(1);
             Destroy(other.gameObject);
+        }
+        if (other.gameObject.CompareTag("SecretArea"))
+        {
+            secretArea = true;
+            if (secretArea)
+            {
+                other.gameObject.GetComponent<MeshRenderer>().enabled = false;
+            }
+           
         }
     }
 
@@ -277,6 +297,18 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             KillPlayer();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("SecretArea"))
+        {
+            secretArea = false;
+            if (!secretArea)
+            {
+                other.gameObject.GetComponent<MeshRenderer>().enabled = true;
+            }
         }
     }
 
