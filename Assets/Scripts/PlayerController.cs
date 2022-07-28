@@ -35,6 +35,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int livesRemain = 3;
     [SerializeField] private int score;
 
+    [Header("Achievement requirments")]
+    [HideInInspector] public int enemyKillCount;
+    public int highScore;
 
     void Start()
     {
