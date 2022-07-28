@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int livesRemain = 3;
     [SerializeField] private int score;
 
+
     void Start()
     {
         animator = GetComponent<Animator>();
