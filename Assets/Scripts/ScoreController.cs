@@ -45,6 +45,7 @@ public class ScoreController : MonoBehaviour
             {
                 string achievement = coinachievementSO.coinscollectedArray[i].coinsAchievementsType.ToString();
                 StartCoroutine(UnlockedAchievement(achievement));
+                return;
             }
         }
     }

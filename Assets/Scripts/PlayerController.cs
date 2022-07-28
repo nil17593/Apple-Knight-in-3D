@@ -5,30 +5,36 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-
-    private Rigidbody rb;
-    public float speed;
-    float horizontal;
-    float vertical;
+    #region SerializedFields
+    [SerializeField] private float speed;
     [SerializeField] private float groundVelocity;
     [SerializeField] private float jumpVelocity;
     [SerializeField] private float jumpFallVelocity;
     [SerializeField] private float jump;
+    [SerializeField] private float groundCheckRadius;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private float jumpPower;
+    #endregion
 
+    #region bools
     public bool isforwardClicked = false;
     public bool isReverseClicked = false;
     public bool isFacingRight = true;
     public bool isGrounded = false;
-    Collider[] groundColliders;
-    public float groundCheckRadius;
-    public LayerMask groundLayer;
-    public Transform groundCheck;
-    public float jumpPower;
-    private Animator animator;
     public bool jumping = false;
     public bool secretArea = false;
     private bool gameOver;
     public bool ableToMakeADoubleJump = false;
+    #endregion
+
+    #region private fields
+    private Rigidbody rb;
+    private Animator animator;
+    Collider[] groundColliders;
+    float horizontal;
+    float vertical;
+    #endregion
 
     [Header("Health UI")]
     [SerializeField] private Image[] hearts;
@@ -85,15 +91,6 @@ public class PlayerController : MonoBehaviour
             Flip();
         }
         AttackAnimation();
-        //Debug.Log("UPDATE"+horizontal);
-
-
-        //#if UNITY_EDITOR
-        //        if (Input.GetKey(KeyCode.D))
-        //        {
-        //            rb.velocity = new Vector3(0, 0, 1 * speed * Time.deltaTime);
-        //        }
-        //#endif
     }
 
     private void FixedUpdate()
@@ -135,9 +132,6 @@ public class PlayerController : MonoBehaviour
 
         Movement();
         MoveWithUIButtons();
-        // MoveCharacter(horizontal, vertical);
-        //PlayerJumpAnimation(vertical);
-        //Move();
     }
 
     private void DoubleJump()
@@ -151,12 +145,17 @@ public class PlayerController : MonoBehaviour
 
     public void KillPlayer()
     {
-        livesRemain--;
-        UpdateLifeUI();
-        //if (gameOver == true)
-        //{
-        //    gameOverController.PlayerDied();
-        //}
+        if (gameOver)
+        {
+            GameManager.instance.EnableRestartPanel();
+            return;
+        }
+        else
+        {
+            livesRemain--;
+            UpdateLifeUI();
+        }
+       
     }
     private void UpdateLifeUI()
     {
