@@ -38,8 +38,17 @@ public class EnemyController : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<PlayerController>() != null)
         {
-            TakeDamage(30);
+            
             playerController.KillPlayer();         
+        }
+       
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Sword"))
+        {
+            TakeDamage(30);
         }
     }
 

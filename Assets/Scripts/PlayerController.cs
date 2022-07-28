@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -34,6 +33,7 @@ public class PlayerController : MonoBehaviour
     Collider[] groundColliders;
     float horizontal;
     float vertical;
+    private GameManager gameManager;
     #endregion
 
     [Header("Health UI")]
@@ -53,6 +53,7 @@ public class PlayerController : MonoBehaviour
         isReverseClicked = false;
         isFacingRight = true;
         jumping = false;
+        gameManager = GameManager.instance;
     }
 
     // Update is called once per frame
@@ -223,8 +224,8 @@ public class PlayerController : MonoBehaviour
         if (isGrounded)
         {
             isGrounded = false;
-            animator.SetBool("Jump", true);
-            rb.AddForce(new Vector3(0, jumpPower, 0));
+            animator.SetBool("Jumping", true);
+            rb.AddForce(new Vector3(0, jumpPower*4, 0));
         }
     }
 
@@ -292,6 +293,10 @@ public class PlayerController : MonoBehaviour
                 other.gameObject.GetComponent<MeshRenderer>().enabled = false;
             }
            
+        }
+        if (other.gameObject.CompareTag("Level1Complete"))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 

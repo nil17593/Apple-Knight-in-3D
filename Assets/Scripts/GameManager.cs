@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private GameObject secreteArea;
-    [SerializeField] private GameObject secreteArea2;
+
+    [SerializeField] private GameObject playerDiePanel;
 
     [Header("Character Customization")]
     [SerializeField] private GameObject characterCustomizationPanel;
@@ -19,12 +21,27 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Material characterMaterial;
     [SerializeField] private Texture2D characterTex;
 
-    [SerializeField] private GameObject playerDiePanel;
+    [SerializeField] private TextMeshProUGUI scoreText;
 
+    //[SerializeField] private int coinScore = 0;
+    //[SerializeField] private GameObject achievementPanel;
+    //[SerializeField] private TextMeshProUGUI achievementText;
+    //[SerializeField] private CoinsCollectedAchievementSO coinachievementSO;
+    //[SerializeField] private GameObject canvas;
 
     public static GameManager instance;
+
     private void Awake()
     {
+        //if (instance != null)
+        //{
+        //    Destroy(this);
+        //}
+        //else
+        //{
+        //    instance = this;
+        //    DontDestroyOnLoad(this);
+        //}
         playerDiePanel.SetActive(false);
         canProgress = false;
         instance = this;
@@ -32,6 +49,10 @@ public class GameManager : MonoBehaviour
         characterMaterial.mainTexture = characterTex;
     }
 
+    private void Start()
+    {
+        instance = this;
+    }
     public void OnChangeTexturesClicked()
     {
         canProgress = true;
@@ -55,4 +76,38 @@ public class GameManager : MonoBehaviour
     {
         playerDiePanel.gameObject.SetActive(true);
     }
+
+    //public void IncreaseScore(int increament)
+    //{
+    //    Debug.Log(coinScore);
+    //    coinScore += increament;
+    //    RefreshUI();
+    //    CheckForCoinAchievement();
+    //}
+
+    //private void RefreshUI()
+    //{
+    //    scoreText.text = "Coins: " + coinScore;
+    //}
+
+    //public void CheckForCoinAchievement()
+    //{
+    //    for (int i = 0; i < coinachievementSO.coinscollectedArray.Length; i++)
+    //    {
+    //        if (coinScore == coinachievementSO.coinscollectedArray[i].requirement)
+    //        {
+    //            string achievement = coinachievementSO.coinscollectedArray[i].coinsAchievementsType.ToString();
+    //            StartCoroutine(UnlockedAchievement(achievement));
+    //            return;
+    //        }
+    //    }
+    //}
+
+    //IEnumerator UnlockedAchievement(string achievement)
+    //{
+    //    achievementText.text = "Acheivment Unlocked: " + achievement;
+    //    achievementPanel.SetActive(true);
+    //    yield return new WaitForSeconds(2f);
+    //    achievementPanel.SetActive(false);
+    //}
 }
